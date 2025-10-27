@@ -279,7 +279,7 @@ class SaveHandler():
         self.agent = agent
         self.save_freq = save_freq
         self.run_name = run_name
-        self.max_saved = max_saved
+        self.max_saved = max_saved + 1
         self.save_path = save_path
         self.name_prefix = name_prefix
         self.mode = mode
@@ -357,6 +357,11 @@ class SaveHandler():
     def process(self) -> bool:
         self.num_timesteps += 1
 
+        # if self.first_save:
+        #     self.save_agent()
+        #     self.first_save = False
+        #     return True
+        
         if self.steps_until_save <= 0:
             # Save agent
             self.steps_until_save = self.save_freq
@@ -387,7 +392,7 @@ class SelfPlayHandler(ABC):
             try:
                 opponent = self.agent_partial(file_path=path)
             except FileNotFoundError:
-                print(f"Warning: Self-play file {path} not found. Defaulting to constant agent.")
+                #print(f"Warning: Self-play file {path} not found. Defaulting to constant agent.")
                 opponent = ConstantAgent()
         else:
             print("Warning: No self-play model saved. Defaulting to constant agent.")
@@ -453,7 +458,7 @@ class OpponentsCfg():
         )[0]
 
         # If self-play is selected, return the trained model
-        print(f'Selected {agent_name}')
+        # print(f'Selected {agent_name}')
         if agent_name == "self_play":
             selfplay_handler: SelfPlayHandler = self.opponents[agent_name][1]
             return selfplay_handler.get_opponent()
