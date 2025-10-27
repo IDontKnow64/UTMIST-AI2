@@ -1,0 +1,3 @@
+[submodule "training_module"]
+	path = training_module
+	url = git@github.com:IDontKnow64/AI2-agent.git
