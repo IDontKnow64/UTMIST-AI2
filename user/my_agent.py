@@ -45,7 +45,7 @@ class SubmittedAgent(Agent):
             self.model = PPO("MlpPolicy", self.env, verbose=0)
             del self.env
         else:
-            self.model = PPO.load(self.file_path)
+            self.model = RecurrentPPO.load(self.file_path)
 
         # To run the sample TTNN model during inference, you can uncomment the 5 lines below:
         # This assumes that your self.model.policy has the MLPPolicy architecture defined in `train_agent.py` or `my_agent_tt.py`
