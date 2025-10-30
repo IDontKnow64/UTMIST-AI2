@@ -9,7 +9,7 @@ pygame.init()
 
 #Input your file path here in SubmittedAgent if you are loading a model:
 my_agent = GoatedAgent()
-opponent = SubmittedAgent(file_path="./checkpoints/experiment_6/rl_model_6156000_steps.zip")
+opponent = SubmittedAgent(file_path="./checkpoints/experiment_6/rl_model_8208000_steps.zip")
 
 match_time = 99999
 
