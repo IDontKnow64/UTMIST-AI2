@@ -20,6 +20,7 @@ from typing import Optional
 from environment.agent import Agent
 from stable_baselines3 import PPO, A2C # Sample RL Algo imports
 from sb3_contrib import RecurrentPPO # Importing an LSTM
+import numpy as np
 
 # To run the sample TTNN model, you can uncomment the 2 lines below: 
 # import ttnn
@@ -35,6 +36,8 @@ class SubmittedAgent(Agent):
         file_path: Optional[str] = None,
     ):
         super().__init__(file_path)
+        self.lstm_states = None
+        self.episode_starts = np.ones((1,), dtype=bool)
 
         # To run a TTNN model, you must maintain a pointer to the device and can be done by 
         # uncommmenting the line below to use the device pointer
@@ -55,17 +58,21 @@ class SubmittedAgent(Agent):
         # self.model.policy.vf_features_extractor.model = self.tt_model
         # self.model.policy.pi_features_extractor.model = self.tt_model
 
+    def reset(self) -> None:
+        self.episode_starts = True
+
     def _gdown(self) -> str:
         data_path = "rl-model.zip"
         if not os.path.isfile(data_path):
             print(f"Downloading {data_path}...")
             # Place a link to your PUBLIC model data here. This is where we will download it from on the tournament server.
-            url = "https://drive.google.com/file/d/1JIokiBOrOClh8piclbMlpEEs6mj3H1HJ/view?usp=sharing"
+            url = "https://drive.google.com/file/d/1a25G-f9THhyXb8K1OwrjPwkolUfvaRYR/view?usp=sharing"
             gdown.download(url, output=data_path, fuzzy=True)
         return data_path
 
     def predict(self, obs):
-        action, _ = self.model.predict(obs)
+        action, self.lstm_states = self.model.predict(obs, state=self.lstm_states, episode_start=self.episode_starts, deterministic=True)
+        if self.episode_starts: self.episode_starts = False
         return action
 
     def save(self, file_path: str) -> None:
