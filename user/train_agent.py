@@ -26,7 +26,6 @@ from stable_baselines3.common.torch_layers import BaseFeaturesExtractor
 import tqdm as tqdm
 
 from environment.agent import *
-from reward_functions import gen_reward_manager
 from typing import Optional, Type, List, Tuple
 
 # -------------------------------------------------------------------------
