@@ -14,6 +14,7 @@ assets.zip
 .env
 
 /checkpoints/*
+RecurrentPPO
 
 # Videos, zip files, or csv
 *.mp4
